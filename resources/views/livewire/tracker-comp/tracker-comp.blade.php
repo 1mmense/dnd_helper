@@ -75,7 +75,6 @@
 
                         @foreach ($creature->effects->all() as $effect)
                             @php
-                                // $creatureEffect = $creature->effects->find($effect->id);
                                 $hasDuration = !empty($effect->effect_data->duration);
                             @endphp
 
@@ -88,13 +87,19 @@
                                 type="button"
                             >
                                 <button
-                                    {{-- wire:click="$wire.showModal = true" --}}
                                     class="
                                         inline-flex items-center justify-center
                                         py-2 pl-1 pr-0.5
                                         border-r border-inherit
                                         hover:bg-black/20 transition-colors
                                     "
+                                    wire:click="$dispatch(
+                                        'remove-effect', {
+                                            creatureId: {{ $creature->id }},
+                                            effectId: {{ $effect->id }}
+                                        }
+                                    )"
+                                    type="button"
                                 >
                                     <svg
                                         class="size-4"
@@ -109,13 +114,27 @@
                                     </svg>
                                 </button>
 
-                                <span class="py-2 px-3 font-medium">
+                                <span class="py-2 px-3 font-medium"
+                                    wire:click="$dispatch(
+                                        'open-duration', {
+                                            creatureId: {{ $creature->id }},
+                                            effectId: {{ $effect->id }},
+                                            duration: {{ $effect->effect_data->duration ?? 0 }}
+                                        }
+                                    )"
+                                >
                                     {{ $effect->name }}
                                 </span>
 
                                 @if ($hasDuration)
                                     <button
-                                        wire:click="$dispatch('open-duration', { duration: '{{ $effect->effect_data->duration }}' })"
+                                        wire:click="$dispatch(
+                                            'open-duration', {
+                                                creatureId: {{ $creature->id }},
+                                                effectId: {{ $effect->id }},
+                                                duration: {{ $effect->effect_data->duration }}
+                                            }
+                                        )"
                                         class="
                                             inline-flex items-center justify-center
                                             py-2 pl-1.5 pr-2

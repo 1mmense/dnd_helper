@@ -2,29 +2,31 @@
 
 use App\Models\Creature;
 use App\Models\Effect;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 new class () extends Component {
-    public $effectContainers      = [];
-    public $showModal             = false;
-    // public $showModalAddEffect    = false;
-    public $showModalEditDuration = false;
+    public $creatures;
+    public $effects;
+    public $effectContainers = [];
+    public $showModal        = false;
 
     public function render()
     {
-        $creatures = Creature::all();
-        $effects   = Effect::all();
+        $this->creatures = Creature::all();
+        $this->effects   = Effect::all();
 
         return $this->view([
-            'creatures' => $creatures,
-            'effects'   => $effects,
+            'creatures' => $this->creatures,
+            'effects'   => $this->effects,
         ]);
     }
 
-    // public function openSettingsWithCheck()
-    // {
-    //     $this->dispatch('open-settings');
-    // }
+    #[On('duration-updated')]
+    public function refresh()
+    {
+        // Intentionally empty
+    }
 
     public function toggleEffectContainer(string $containerId)
     {
@@ -37,10 +39,13 @@ new class () extends Component {
 
     public function changeConditionStatus(int $creatureId, int $effectId)
     {
-        $creature = Creature::find($creatureId);
-        $effect   = Effect::find($effectId);
+        if (empty($creatureId) || empty($effectId)) {
+            return;
+        }
 
-        if (empty($creature) || empty($effectId)) {
+        $creature = Creature::find($creatureId);
+
+        if (empty($creature)) {
             return;
         }
 
@@ -49,5 +54,25 @@ new class () extends Component {
         } else {
             $creature->effects()->attach($effectId);
         }
+    }
+
+    #[On('remove-effect')]
+    public function removeEffect(int $creatureId, int $effectId)
+    {
+        /** @var Creature $creature */
+        $creature = Creature::find($creatureId);
+
+        if (empty($creature)) {
+            return;
+        }
+
+        /** @var Effect $effect */
+        $effect = $creature->effects()->find($effectId);
+
+        if (empty($effect)) {
+            return;
+        }
+
+        $effect->delete();
     }
 };
