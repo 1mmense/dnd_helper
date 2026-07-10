@@ -6,33 +6,13 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 
 new class () extends Component {
-    public bool $showEffects  = false;
-    public bool $showDuration = false;
+    public bool $durationPopupDisplayFlag = false;
 
     #[Validate('required|numeric|min:0')]
     public $duration = null;
 
     public $creatureId = null;
     public $effectId   = null;
-
-    public function render()
-    {
-        return $this->view();
-    }
-
-    public function increment()
-    {
-        if (isset($this->duration)) {
-            $this->duration++;
-        }
-    }
-
-    public function decrement()
-    {
-        if (isset($this->duration) && $this->duration > 0) {
-            $this->duration--;
-        }
-    }
 
     public function updateDuration()
     {
@@ -52,16 +32,20 @@ new class () extends Component {
 
         $this->dispatch('duration-updated');
 
-        $this->showDuration = false;
+        $this->durationPopupDisplayFlag = false;
     }
 
-    #[On('open-duration')]
-    public function openDuration($creatureId = null, $effectId = null, $duration = null)
+    #[On('open-duration-popup')]
+    public function showDurationPopup($creatureId = null, $effectId = null, $duration = null)
     {
-        $this->duration   = $duration;
-        $this->creatureId = $creatureId;
-        $this->effectId   = $effectId;
+        if (!isset($creatureId, $effectId, $duration)) {
+            return;
+        }
 
-        $this->showDuration = true;
+        $this->duration = $duration;
+        $this->creatureId   = $creatureId;
+        $this->effectId     = $effectId;
+
+        $this->durationPopupDisplayFlag = true;
     }
 };

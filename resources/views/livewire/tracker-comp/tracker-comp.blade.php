@@ -1,20 +1,35 @@
 <div>
-    <x-popup-window
-        window_title="Добавить эффект"
-        close_button_text="Добавить"
-    >
-        @foreach ($effects as $effect)
-            {{ $effect->name }}
-        @endforeach
-    </x-popup-window>
-
-    <livewire:modal-wrapper
-        window_title="Изменить длительность"
-        close_button_text="Применить"
+    <livewire:popup.duration
+        popup_title="Изменить длительность"
+        submit_button_text="Применить"
     />
 
+    <livewire:popup.add-effect
+        popup_title="Добавить эффект"
+        submit_button_text="Применить"
+    />
+
+    {{-- @foreach ($effects as $effect)
+        {{ $effect->name }}
+    @endforeach --}}
+
+    {{-- <button
+        wire:click="$wire.showModal = true"
+        class="
+            bg-black/20 text-gray-300 border-white/30
+            hover:bg-white/25 hover:text-white
+            font-medium ease-in-out duration-150
+            inline-flex items-center overflow-hidden rounded-full border text-xs transition
+            px-4 py-2
+        "
+    >
+        Добавить...
+    </button> --}}
+
     @foreach ($creatures as $creature)
-        <div class="mb-4 rounded-[10px] border border-white/30 bg-red-800/20 px-4 pb-4 pt-4">
+        <div wire:key="{{ $creature->id }}"
+            class="mb-4 rounded-[10px] border border-white/30 bg-red-800/20 px-4 pb-4 pt-4"
+        >
             <time class="block text-xs text-gray-400" datetime="2022-10-10">
                 {{ App\Enums\CreatureType::getLabel($creature->type) }}
             </time>
@@ -60,8 +75,12 @@
                     </summary>
 
                     <div class="flex flex-wrap gap-1 p-4 border-t border-white/30">
-                        <x-popup-button
-                            wire:click="$wire.showModal = true"
+                        <button
+                            wire:click="$dispatch(
+                                'open-effects-popup', {
+                                    creatureId: {{ $creature->id }}
+                                }
+                            )"
                             class="
                                 bg-black/20 text-gray-300 border-white/30
                                 hover:bg-white/25 hover:text-white
@@ -71,7 +90,7 @@
                             "
                         >
                             Добавить...
-                        </x-popup-button>
+                        </button>
 
                         @foreach ($creature->effects->all() as $effect)
                             @php
@@ -81,7 +100,7 @@
                             <span
                                 class="
                                     {{ $effect->color }}
-                                    inline-flex items-center p-0 overflow-hidden rounded-full border text-xs transition
+                                    inline-flex items-center p-0 overflow-hidden rounded-full border text-xs
                                     cursor-pointer
                                 "
                                 type="button"
@@ -93,12 +112,7 @@
                                         border-r border-inherit
                                         hover:bg-black/20 transition-colors
                                     "
-                                    wire:click="$dispatch(
-                                        'remove-effect', {
-                                            creatureId: {{ $creature->id }},
-                                            effectId: {{ $effect->id }}
-                                        }
-                                    )"
+                                    wire:click="removeEffect({{ $creature->id }}, {{ $effect->id }})"
                                     type="button"
                                 >
                                     <svg
@@ -116,7 +130,7 @@
 
                                 <span class="py-2 px-3 font-medium"
                                     wire:click="$dispatch(
-                                        'open-duration', {
+                                        'open-duration-popup', {
                                             creatureId: {{ $creature->id }},
                                             effectId: {{ $effect->id }},
                                             duration: {{ $effect->effect_data->duration ?? 0 }}
@@ -129,7 +143,7 @@
                                 @if ($hasDuration)
                                     <button
                                         wire:click="$dispatch(
-                                            'open-duration', {
+                                            'open-duration-popup', {
                                                 creatureId: {{ $creature->id }},
                                                 effectId: {{ $effect->id }},
                                                 duration: {{ $effect->effect_data->duration }}

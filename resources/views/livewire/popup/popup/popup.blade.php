@@ -1,13 +1,14 @@
 @props([
-    'window_title', 'close_button_text'
+    'popup_title' => 'Popup title'
 ])
 
-<div wire:show="showModal"
-    class="fixed flex inset-0 items-center justify-center z-50 bg-black/50"
+<div class="fixed flex inset-0 items-center justify-center z-50 bg-black/50"
+    wire:show="show_flag"
+    wire:click="$set('show_flag', false)"
+    wire:keydown.escape.window="$set('show_flag', false)"
     style="display: none;"
-    wire:click.self="$wire.showModal = false"
-    wire:keydown.escape.window="$wire.showModal = false"
 >
+    <p>{{ $show_flag }}</p>
     <div
         class="
             bg-red-950 text-gray-300 border-2 border-white/30 p-6 rounded-lg shadow-lg max-w-md w-full
@@ -15,17 +16,16 @@
         wire:click.stop
     >
         <div class="flex items-center justify-between">
-            <h2 class="text-xl font-bold">{{ $window_title }}</h2>
+            <h2 class="text-xl font-bold">{{ $popup_title }}</h2>
 
             <button
                 type="button"
                 class="
                     p-2 rounded-full transition-colors
-                    focus:ring-2 focus:ring-white/30 focus:ring-offset-2 focus:ring-offset-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-2 focus-visible:ring-offset-white focus-visible:outline-none
-                    hover:bg-gray-50 hover:text-gray-900
+                    hover:bg-white/30 hover:text-gray-900
                 "
                 aria-label="Close"
-                wire:click="$wire.showModal = false"
+                wire:click="$set('show_flag', false)"
             >
                 <svg
                     aria-hidden="true"
@@ -45,12 +45,6 @@
             </button>
         </div>
 
-        <div class="my-4">
-            {{ $slot }}
-        </div>
-
-        <button wire:click="$wire.showModal = false" class="px-4 py-2 bg-black/30 rounded border border-white/30">
-            {{ $close_button_text }}
-        </button>
+        {{ $slot }}
     </div>
 </div>

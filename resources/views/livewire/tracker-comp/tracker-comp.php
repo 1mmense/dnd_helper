@@ -9,7 +9,6 @@ new class () extends Component {
     public $creatures;
     public $effects;
     public $effectContainers = [];
-    public $showModal        = false;
 
     public function render()
     {
@@ -37,7 +36,7 @@ new class () extends Component {
         }
     }
 
-    public function changeConditionStatus(int $creatureId, int $effectId)
+    public function toggleEffect(int $creatureId, int $effectId)
     {
         if (empty($creatureId) || empty($effectId)) {
             return;
