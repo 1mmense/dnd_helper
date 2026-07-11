@@ -7,17 +7,14 @@ use Livewire\Component;
 
 new class () extends Component {
     public $creatures;
-    public $effects;
     public $effectContainers = [];
 
     public function render()
     {
         $this->creatures = Creature::all();
-        $this->effects   = Effect::all();
 
         return $this->view([
             'creatures' => $this->creatures,
-            'effects'   => $this->effects,
         ]);
     }
 

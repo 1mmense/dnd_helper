@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Creature;
+use App\Models\Effect;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -8,14 +9,21 @@ use Livewire\Component;
 new class () extends Component {
     public bool $effectsPopupDisplayFlag = false;
 
-    public $creatureId     = null;
-    public $effectId       = null;
-
-    // TODO: Либо передавать эффекты из вьюшки, либо доставать их один раз где-то здесь
-    public $currentEffects = null;
+    public $creatureId = null;
+    public $effectId   = null;
+    public $effects;
 
     #[Validate('required|numeric|min:0')]
     public int $duration;
+
+    public function render()
+    {
+        $this->effects = Effect::all();
+
+        return $this->view([
+            'effects' => $this->effects,
+        ]);
+    }
 
     #[On('open-effects-popup')]
     public function showEffectsPopup(int $creatureId)
@@ -24,13 +32,13 @@ new class () extends Component {
         // $this->currentEffects = $currentEffects;
 
         /** @var Creature $creature */
-        $creature = Creature::find($this->creatureId);
+        // $creature = Creature::find($this->creatureId);
 
-        if (empty($creature)) {
-            return;
-        }
+        // if (empty($creature)) {
+        //     return;
+        // }
 
-        $this->currentEffects = $creature->effects->all() ?? [];
+        // $this->currentEffects = $creature->effects->all() ?? [];
 
         $this->effectsPopupDisplayFlag = true;
     }
@@ -39,7 +47,7 @@ new class () extends Component {
     {
         $this->validate();
 
-        if (!isset($this->creatureId, $this->currentEffects)) {
+        if (!isset($this->creatureId)) {
             return;
         }
 

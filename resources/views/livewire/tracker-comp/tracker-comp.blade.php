@@ -9,10 +9,6 @@
         submit_button_text="Применить"
     />
 
-    {{-- @foreach ($effects as $effect)
-        {{ $effect->name }}
-    @endforeach --}}
-
     {{-- <button
         wire:click="$wire.showModal = true"
         class="
@@ -57,8 +53,7 @@
                     >
                         <span class="text-gray-300">Эффекты</span>
 
-                        <svg
-                            class="size-5 shrink-0 transition-transform duration-300 group-open:-rotate-180"
+                        <svg class="size-5 shrink-0 transition-transform duration-300 group-open:-rotate-180"
                             aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
