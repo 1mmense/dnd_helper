@@ -9,37 +9,36 @@ use Livewire\Component;
 new class () extends Component {
     public bool $effectsPopupDisplayFlag = false;
 
-    public $creatureId = null;
-    public $effectId   = null;
-    public $effects;
+    public Creature $creature;
 
-    #[Validate('required|numeric|min:0')]
-    public int $duration;
+    public $effectsList      = null;
+    public $selectedEffectId = null;
+
+    #[Validate('required|numeric|min:1')]
+    public int $duration = 1;
+
+    public bool $refreshSelectFlag = false;
 
     public function render()
     {
-        $this->effects = Effect::all();
+        $this->effectsList = Effect::all();
 
         return $this->view([
-            'effects' => $this->effects,
+            'effects' => $this->effectsList,
         ]);
     }
 
     #[On('open-effects-popup')]
     public function showEffectsPopup(int $creatureId)
     {
-        $this->creatureId = $creatureId;
-        // $this->currentEffects = $currentEffects;
-
         /** @var Creature $creature */
-        // $creature = Creature::find($this->creatureId);
+        $creature = Creature::findOrFail($creatureId);
 
-        // if (empty($creature)) {
-        //     return;
-        // }
+        if (empty($creature)) {
+            return;
+        }
 
-        // $this->currentEffects = $creature->effects->all() ?? [];
-
+        $this->creature                = $creature;
         $this->effectsPopupDisplayFlag = true;
     }
 
@@ -47,20 +46,23 @@ new class () extends Component {
     {
         $this->validate();
 
-        if (!isset($this->creatureId)) {
+        if (!isset($this->creature)
+            || !isset($this->selectedEffectId)
+            || !isset($this->duration)
+        ) {
             return;
         }
 
-        /** @var Creature $creature */
-        $creature = Creature::find($this->creatureId);
+        $this->creature->effects()->updateExistingPivotOrFail(
+            $this->selectedEffectId,
+            ['duration' => $this->duration]
+        );
 
-        // $creature->effects()->updateExistingPivotOrFail(
-        //     $this->effectId,
-        //     ['duration' => $this->duration]
-        // );
-
-        // $this->dispatch('duration-updated');
+        $this->dispatch('reload-main-content');
+        $this->dispatch('reset-select-element');
 
         $this->effectsPopupDisplayFlag = false;
+        $this->selectedEffectId        = null;
+        $this->duration                = 1;
     }
 };

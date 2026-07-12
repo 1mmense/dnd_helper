@@ -18,7 +18,7 @@ new class () extends Component {
         ]);
     }
 
-    #[On('duration-updated')]
+    #[On('reload-main-content')]
     public function refresh()
     {
         // Intentionally empty

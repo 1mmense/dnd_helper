@@ -18,7 +18,7 @@
         <!-- Поле ввода -->
         <input
             type="number"
-            min="0"
+            min="1"
             class="
                 w-16 h-10 text-center border-t border-b focus:outline-none focus:ring-0 text-lg font-medium [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
                 bg-transparent border-white/20 text-white
@@ -45,8 +45,4 @@
             &plus;
         </button>
     </div>
-
-    @error('duration')
-        <span class="text-red-500 text-xs">{{ $message }}</span>
-    @enderror
 </div>

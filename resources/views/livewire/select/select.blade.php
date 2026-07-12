@@ -1,7 +1,8 @@
+@props(['selected'])
+
 <div
     x-data="{
         highlighted: 0,
-        {{-- open: false, --}}
         count: {{ count($items) }},
         next() {
             this.highlighted = (this.highlighted + 1) % this.count;
@@ -11,13 +12,14 @@
         },
         select() {
             this.$wire.call('select', this.highlighted);
-            this.open = false;
         }
     }"
-    x-init="highlighted = {{ $selected ?: 0 }}"
+    x-init="highlighted = {{ $selectedElementKey ?: 0 }}"
 >
     <div class="relative"
-        wire:click.outside="$set('open', false)"
+        @if ($open)
+            wire:click.outside="$set('open', false)"
+        @endif
     >
         <button
             wire:click="$toggle('open')"
@@ -26,15 +28,18 @@
                 border-white/30
                 {{ $open ? 'border-t border-l border-r rounded-t-lg' : 'border rounded-lg' }}
             "
+            type="button"
             @keydown.arrow-down="next()"
             @keydown.arrow-up="previous()"
             @keydown.enter.prevent="select()"
         >
-            @if ($selected !== null)
-                {{ $items[$selected]->name }}
-            @else
-                {{ $label }}
-            @endif
+            <span>
+                @if ($selectedElementKey !== null)
+                    {{ $items[$selectedElementKey]->name }}
+                @else
+                    {{ $label }}
+                @endif
+            </span>
 
             <div class="text-gray-300">
                 @if ($open)
@@ -66,17 +71,18 @@
                         <li wire:click="select({{ $loop->index }})"
                             @class([
                                 'px-3 py-0.5 cursor-pointer flex items-center justify-between',
-                                'bg-red-800/70 text-white' => $selected === $loop->index, // Selected option with check mark
+                                'bg-red-800/70 text-white' => $selectedElementKey === $loop->index, // selectedElementKey option with check mark
                                 'hover:bg-red-700 hover:text-white',
                             ])
                             x-data="{ index: {{ $loop->index }} }"
                             :class="index === highlighted ? 'bg-red-700 text-white' : ''"
                             @mouseover="highlighted = index"
+                            wire:key="select-option-{{ $item->id }}"
                         >
                             {{ $item->name }}
 
-                            {{-- Check mark for the selected option --}}
-                            @if ($selected === $loop->index)
+                            {{-- Check mark for the selectedElementKey option --}}
+                            @if ($selectedElementKey === $loop->index)
                                 <div
                                     :class="index === highlighted ? 'text-white' : 'text-red-400'"
                                 >

@@ -8,8 +8,8 @@ use Livewire\Attributes\Validate;
 new class () extends Component {
     public bool $durationPopupDisplayFlag = false;
 
-    #[Validate('required|numeric|min:0')]
-    public $duration = null;
+    #[Validate('required|numeric|min:1')]
+    public $duration = 1;
 
     public $creatureId = null;
     public $effectId   = null;
@@ -30,7 +30,7 @@ new class () extends Component {
             ['duration' => $this->duration]
         );
 
-        $this->dispatch('duration-updated');
+        $this->dispatch('reload-main-content');
 
         $this->durationPopupDisplayFlag = false;
     }
@@ -42,9 +42,9 @@ new class () extends Component {
             return;
         }
 
-        $this->duration = $duration;
-        $this->creatureId   = $creatureId;
-        $this->effectId     = $effectId;
+        $this->duration   = $duration;
+        $this->creatureId = $creatureId;
+        $this->effectId   = $effectId;
 
         $this->durationPopupDisplayFlag = true;
     }

@@ -11,11 +11,9 @@
             <form wire:submit="updateDuration">
                 @csrf
 
-                <div>
-                    <x-duration-input
-                        wire:model="duration"
-                    />
-                </div>
+                <x-duration-input
+                    wire:model="duration"
+                />
 
                 <input type="hidden" wire:model="creatureId" value="{{ $creatureId }}" />
                 <input type="hidden" wire:model="effectId" value="{{ $effectId }}" />
