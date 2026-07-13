@@ -107,25 +107,33 @@ class DatabaseSeeder extends Seeder
 
         $creatures = [
             [
-                'name' => 'Веледара',
-                'type' => CreatureType::PLAYABLE,
+                'name'       => 'Веледара',
+                'type'       => CreatureType::PLAYABLE,
+                'initiative' => 30,
             ],
             [
-                'name' => 'Доброслав',
-                'type' => CreatureType::PLAYABLE,
+                'name'       => 'Доброслав',
+                'type'       => CreatureType::PLAYABLE,
+                'initiative' => rand(1, 23),
             ],
             [
-                'name' => 'Симба',
-                'type' => CreatureType::PLAYABLE,
+                'name'       => 'Симба',
+                'type'       => CreatureType::PLAYABLE,
+                'initiative' => rand(1, 23),
             ],
         ];
 
         foreach ($creatures as $creatureKey => $creature) {
-            Creature::create($creature);
+            $cr = Creature::create($creature);
+
+            if ($creatureKey === 0) {
+                $cr->effects()->attach(range(1, count($effects)));
+            }
         }
+
+        Creature::factory(10)->create();
 
         MainList::create();
         // $creature = Creature::first();
-        // $creature->effects()->attach(range(1, count($effects)));
     }
 }

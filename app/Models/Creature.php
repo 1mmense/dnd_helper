@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['initiative', 'position', 'name', 'is_active'])]
+#[Fillable(['initiative', 'position', 'name', 'is_active', 'type'])]
 class Creature extends Model
 {
     /** @use HasFactory<\Database\Factories\CreatureFactory> */

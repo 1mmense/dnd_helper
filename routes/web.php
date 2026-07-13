@@ -1,7 +1,6 @@
 <?php
 
-use App\Models\Creature;
-use App\Models\Effect;
+use App\Http\Controllers\EffectController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -9,19 +8,16 @@ Route::get('/', function () {
 });
 
 Route::get('/tracker', function () {
-    // $creatures = Creature::all();
-    // $effects   = Effect::all();
-
-    // return view('tracker', [
-    //     'creatures' => $creatures,
-    //     'effects'   => $effects,
-    // ]);
-
     return view('tracker');
 });
 
-// Route::livewire('/live-tracker', function () {
-//     return view('live-tracker');
-// });
+Route::controller(EffectController::class)->group(function () {
+    Route::get('/effects', 'index');
+    Route::get('/effects/create', 'create');
+    Route::get('/effects/{effect}', 'show');
+    Route::get('/effects/{effect}/edit', 'edit');
 
-// Route::livewire('/tracker', 'tracker');
+    Route::patch('/effects/{effect}', 'update');
+    Route::delete('/effects/{effect}', 'destroy');
+    Route::post('/effects', 'store');
+});

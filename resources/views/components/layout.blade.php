@@ -14,7 +14,7 @@
     @livewireStyles
 </head>
 
-<body class="h-full bg-black/30">
+<body class="min-h-full bg-black/30">
     <div class="min-h-full">
         <nav class="bg-red-950/50">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -28,8 +28,11 @@
                                 <x-nav-link href="/" :active="request()->is('/')">
                                     Домой
                                 </x-nav-link>
-                                <x-nav-link href="/tracker" :active="request()->is('/tracker')">
+                                <x-nav-link href="/tracker" :active="request()->is('tracker')">
                                     Трекер
+                                </x-nav-link>
+                                <x-nav-link href="/effects" :active="request()->is('effects*')">
+                                    Эффекты
                                 </x-nav-link>
                             </div>
                         </div>

@@ -25,7 +25,7 @@ return new class () extends Migration {
             $table->id();
             $table->foreignIdFor(Effect::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Creature::class)->constrained()->cascadeOnDelete();
-            $table->integer('duration')->nullable();
+            $table->integer('duration')->default(Config::DURATION_MIN);
             $table->timestamps();
         });
 

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\CreatureType;
 use App\Models\Creature;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -18,7 +19,9 @@ class CreatureFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
+            'name'       => fake()->firstName(),
+            'type'       => CreatureType::NON_PLAYABLE,
+            'initiative' => rand(1, 23),
         ];
     }
 }

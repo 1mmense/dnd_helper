@@ -12,7 +12,9 @@ new class () extends Component {
 
     public Creature $creature;
 
-    public $effectsList      = null;
+    public $effectsList = null;
+
+    #[Validate('required')]
     public $selectedEffectId = null;
 
     #[Validate('required|numeric|min:' . Config::DURATION_MIN)]
@@ -22,7 +24,9 @@ new class () extends Component {
 
     public function render()
     {
-        $this->effectsList = Effect::all();
+        $this->effectsList = Effect::query()
+            ->orderBy('name')
+            ->get();
 
         return $this->view([
             'effects' => $this->effectsList,

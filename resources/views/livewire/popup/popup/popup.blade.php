@@ -15,7 +15,7 @@
     </div>
 
     <div class="
-        relative bg-red-950 text-gray-300 border border-white/30 p-6 rounded-lg shadow-lg max-w-md w-full
+        p-6 relative bg-red-950 text-gray-300 border border-white/30 rounded-lg shadow-lg max-w-md w-full
     ">
         <div class="flex items-center justify-between">
             <h2 class="text-xl font-bold">{{ $popup_title }}</h2>

@@ -19,7 +19,7 @@
                 <input type="hidden" wire:model="effectId" value="{{ $effectId }}" />
 
                 <button
-                    class="mt-4 px-4 py-2 bg-black/30 rounded border border-white/20 hover:bg-white/15"
+                    class="mt-4 px-4 py-2 bg-black/30 rounded border border-white/30 hover:bg-white/15"
                     type="submit"
                 >
                     {{ $submit_button_text }}

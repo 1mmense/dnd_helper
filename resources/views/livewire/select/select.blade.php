@@ -15,6 +15,7 @@
         }
     }"
     x-init="highlighted = {{ $selectedElementKey ?: 0 }}"
+    class="w-full"
 >
     <div class="relative"
         @if ($open)
@@ -26,7 +27,7 @@
             class="
                 w-full flex items-center justify-between h-10 bg-black/20 px-2
                 border-white/30
-                {{ $open ? 'border-t border-l border-r rounded-t-lg' : 'border rounded-lg' }}
+                {{ $open ? 'border-t border-l border-r rounded-t' : 'border rounded' }}
             "
             type="button"
             @keydown.arrow-down="next()"
@@ -63,15 +64,19 @@
         @if ($open)
             <ul class="
                     bg-red-950 absolute z-10 border border-white/30 w-full max-h-60 overflow-y-auto
-                    {{ $open ? 'rounded-b-lg' : 'rounded-lg' }}
+                    {{ $open ? 'rounded-b' : 'rounded' }}
                 "
             >
                 <div class="bg-black/20">
                     @foreach ($items as $item)
+                        @php
+                            $renderCheckMark = $selectedElementKey === $loop->index
+                        @endphp
+
                         <li wire:click="select({{ $loop->index }})"
                             @class([
                                 'px-3 py-0.5 cursor-pointer flex items-center justify-between',
-                                'bg-red-800/70 text-white' => $selectedElementKey === $loop->index, // selectedElementKey option with check mark
+                                'bg-red-800/70 text-white' => $renderCheckMark, // selectedElementKey option with check mark
                                 'hover:bg-red-700 hover:text-white',
                             ])
                             x-data="{ index: {{ $loop->index }} }"
@@ -82,7 +87,7 @@
                             {{ $item->name }}
 
                             {{-- Check mark for the selectedElementKey option --}}
-                            @if ($selectedElementKey === $loop->index)
+                            @if ($renderCheckMark)
                                 <div
                                     :class="index === highlighted ? 'text-white' : 'text-red-400'"
                                 >

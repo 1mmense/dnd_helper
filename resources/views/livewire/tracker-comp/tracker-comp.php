@@ -19,7 +19,7 @@ new class () extends Component {
     public function render()
     {
         $this->roundNumber = MainList::first()->round_number;
-        $this->creatures = $this->getOrderedCreatures();
+        $this->creatures   = $this->getOrderedCreatures();
 
         $activeIndex = $this->creatures->search(
             fn ($creature) => $creature->is_active
@@ -119,11 +119,11 @@ new class () extends Component {
         ]);
 
         DB::table('creature_effect')
-            ->where('creature_id', $currentActiveCreature->id)
+            ->where('creature_id', $nextCreature->id)
             ->where('duration', '>', Config::DURATION_TO_REMOVE)
             ->decrement('duration');
 
-        $currentActiveCreature->effects()
+        $nextCreature->effects()
             ->wherePivot('duration', '<=', Config::DURATION_TO_REMOVE)
             ->detach();
     }
@@ -159,5 +159,14 @@ new class () extends Component {
         $mainList->update([
             'round_number' => Config::DEFAULT_ROUND_NUMBER
         ]);
+    }
+
+    public function destroyCreature($creatureId = null)
+    {
+        if (!isset($creatureId)) {
+            return;
+        }
+
+        Creature::find($creatureId)->delete();
     }
 };
