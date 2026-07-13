@@ -2,15 +2,20 @@
     'popup_title' => 'Popup title'
 ])
 
-<div class="fixed inset-0 flex items-center justify-center z-50" wire:show="show_flag" style="display: none;">
+<div class="fixed inset-0 flex items-center justify-center z-50"
+    wire:show="show_flag"
+    style="display: none;"
+>
     <div class="absolute inset-0 bg-black/50"
-        wire:click="$set('show_flag', false)"
-        wire:keydown.escape.window="$set('show_flag', false)"
+        @if ($show_flag)
+            wire:click="$set('show_flag', false)"
+            wire:keydown.escape.window="$set('show_flag', false)"
+        @endif
     >
     </div>
 
     <div class="
-        relative bg-red-950 text-gray-300 border-2 border-white/30 p-6 rounded-lg shadow-lg max-w-md w-full
+        relative bg-red-950 text-gray-300 border border-white/30 p-6 rounded-lg shadow-lg max-w-md w-full
     ">
         <div class="flex items-center justify-between">
             <h2 class="text-xl font-bold">{{ $popup_title }}</h2>

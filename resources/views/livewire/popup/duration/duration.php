@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\Config;
 use App\Models\Creature;
 use Livewire\Component;
 use Livewire\Attributes\On;
@@ -8,8 +9,8 @@ use Livewire\Attributes\Validate;
 new class () extends Component {
     public bool $durationPopupDisplayFlag = false;
 
-    #[Validate('required|numeric|min:1')]
-    public $duration = 1;
+    #[Validate('required|numeric|min:' . Config::DURATION_MIN)]
+    public $duration = Config::DURATION_MIN;
 
     public $creatureId = null;
     public $effectId   = null;

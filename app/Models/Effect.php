@@ -11,7 +11,7 @@ class Effect extends Model
     {
         return Attribute::make(
             get: function (string $value, array $attributes) {
-                $formatted = "bg-{$value}/40 border-{$value} text-{$value}";
+                $formatted = "bg-{$value}/30 border-{$value} text-{$value}";
 
                 return $formatted;
             }

@@ -5,18 +5,17 @@
 <div>
     <livewire:popup.popup
         popup_title="{{ $popup_title }}"
-        wire:model="durationPopupDisplayFlag"
+        wire:model="initiativePopupDisplayFlag"
     >
         <div class="my-4 flex-col items-center justify-between">
-            <form wire:submit="updateDuration">
+            <form wire:submit="updateInitiative">
                 @csrf
 
                 <x-numeric-input
-                    wire:model="duration"
+                    wire:model="initiative"
                 />
 
                 <input type="hidden" wire:model="creatureId" value="{{ $creatureId }}" />
-                <input type="hidden" wire:model="effectId" value="{{ $effectId }}" />
 
                 <button
                     class="mt-4 px-4 py-2 bg-black/30 rounded border border-white/20 hover:bg-white/15"

@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\Config;
 use App\Models\Creature;
 use App\Models\Effect;
 use Livewire\Attributes\On;
@@ -14,8 +15,8 @@ new class () extends Component {
     public $effectsList      = null;
     public $selectedEffectId = null;
 
-    #[Validate('required|numeric|min:1')]
-    public int $duration = 1;
+    #[Validate('required|numeric|min:' . Config::DURATION_MIN)]
+    public int $duration = Config::DURATION_MIN;
 
     public bool $refreshSelectFlag = false;
 
@@ -53,16 +54,17 @@ new class () extends Component {
             return;
         }
 
-        $this->creature->effects()->updateExistingPivotOrFail(
-            $this->selectedEffectId,
-            ['duration' => $this->duration]
-        );
+        $this->creature->effects()->syncWithoutDetaching([
+            $this->selectedEffectId => [
+                'duration' => $this->duration
+            ]
+        ]);
 
         $this->dispatch('reload-main-content');
         $this->dispatch('reset-select-element');
 
         $this->effectsPopupDisplayFlag = false;
         $this->selectedEffectId        = null;
-        $this->duration                = 1;
+        $this->duration                = Config::DURATION_MIN;
     }
 };

@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\Config;
 use App\Models\Creature;
 use App\Models\Effect;
 use Illuminate\Database\Migrations\Migration;
@@ -25,6 +26,12 @@ return new class () extends Migration {
             $table->foreignIdFor(Effect::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Creature::class)->constrained()->cascadeOnDelete();
             $table->integer('duration')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('main_list', function (Blueprint $table) {
+            $table->id();
+            $table->integer('round_number')->default(Config::DEFAULT_ROUND_NUMBER);
             $table->timestamps();
         });
     }

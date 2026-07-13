@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Enums\CreatureType;
 use App\Models\Creature;
 use App\Models\Effect;
+use App\Models\MainList;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -123,7 +124,8 @@ class DatabaseSeeder extends Seeder
             Creature::create($creature);
         }
 
-        $creature = Creature::first();
-        $creature->effects()->attach(range(1, count($effects)));
+        MainList::create();
+        // $creature = Creature::first();
+        // $creature->effects()->attach(range(1, count($effects)));
     }
 }

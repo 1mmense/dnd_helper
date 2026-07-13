@@ -3,10 +3,11 @@
 namespace App\Models;
 
 use App\Enums\CreatureType;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+#[Fillable(['initiative', 'position', 'name', 'is_active'])]
 class Creature extends Model
 {
     /** @use HasFactory<\Database\Factories\CreatureFactory> */

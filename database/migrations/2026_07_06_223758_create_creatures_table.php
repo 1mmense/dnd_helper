@@ -1,11 +1,11 @@
 <?php
 
+use App\Helpers\Config;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      */
@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('type');
+            $table->boolean('is_active')->default(false);
+            $table->integer('initiative')->default(Config::DEFAULT_INI);
+            $table->integer('position')->default(Config::DEFAULT_POSITION);
             $table->timestamps();
         });
     }
