@@ -17,16 +17,16 @@ new class () extends Component {
     public $initiative = Config::DEFAULT_INI;
 
     #[Validate('required|string')]
-    public $type = null;
+    public $type = Config::CREATURE_TYPE_DEFAULT;
 
     public $typesList;
     public Creature $creature;
 
     public function resetProperties()
     {
-        $this->name       = Config::CREATURE_NAME_DEFAULT;
+        $this->name       = null;
         $this->initiative = Config::DEFAULT_INI;
-        $this->type       = null;
+        $this->type       = Config::CREATURE_TYPE_DEFAULT;
     }
 
     public function updateCreature()
@@ -37,7 +37,7 @@ new class () extends Component {
             return;
         }
 
-        if ($this->creature) {
+        if (isset($this->creature)) {
             $this->creature->update([
                 'name'       => $this->name,
                 'initiative' => $this->initiative,

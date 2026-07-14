@@ -114,7 +114,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name'       => 'Доброслав',
                 'type'       => CreatureType::PLAYABLE,
-                'initiative' => rand(1, 23),
+                'initiative' => 31,
             ],
             [
                 'name'       => 'Симба',
@@ -131,7 +131,7 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        Creature::factory(10)->create();
+        // Creature::factory(10)->create();
 
         MainList::create();
         // $creature = Creature::first();

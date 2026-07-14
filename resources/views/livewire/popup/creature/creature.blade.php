@@ -14,9 +14,7 @@
             @csrf
 
             @if ($typesList)
-                <div class="flex flex-col w-full justify-between gap-1"
-                    wire:ignore
-                >
+                <div class="flex flex-col w-full justify-between gap-1">
                     <label for="name" class="text-sm font-medium">
                         Тип:
                     </label>
@@ -25,6 +23,7 @@
                         :items="$typesList"
                         label="Тип существа"
                         wire:model="type"
+                        wire:key="select-creature-type-{{ $creature?->id ?? 'new' }}"
                     />
                 </div>
 

@@ -15,6 +15,17 @@ new class () extends Component {
     public $label;
     public $open = false;
 
+    public function mount()
+    {
+        if (!isset($this->selectedElementKey)
+            && isset($this->selectedItemId, $this->items)
+        ) {
+            $this->selectedElementKey = $this->items->search(
+                fn ($item) => $item->id === $this->selectedItemId
+            );
+        }
+    }
+
     #[On('reset-select-element')]
     public function unload()
     {

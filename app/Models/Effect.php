@@ -22,6 +22,7 @@ class Effect extends Model
 
     public function creatures()
     {
-        return $this->belongsToMany(Creature::class, foreignPivotKey: 'effect_id');
+        return $this->belongsToMany(Creature::class, foreignPivotKey: 'effect_id')
+            ->withTimestamps();
     }
 }

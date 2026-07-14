@@ -75,10 +75,10 @@ new class () extends Component {
 
     private function getOrderedCreatures()
     {
-        return Creature::query()
+        return Creature::
+            // with(['effects' => fn ($query) => $query->orderBy('name')])
+            with('effects')
             ->orderByDesc('initiative')
-            ->orderByDesc('sub_initiative')
-            ->with('effects')
             ->get();
     }
 
@@ -119,11 +119,11 @@ new class () extends Component {
         ]);
 
         DB::table('creature_effect')
-            ->where('creature_id', $nextCreature->id)
+            ->where('creature_id', $currentActiveCreature->id)
             ->where('duration', '>', Config::DURATION_TO_REMOVE)
             ->decrement('duration');
 
-        $nextCreature->effects()
+        $currentActiveCreature->effects()
             ->wherePivot('duration', '<=', Config::DURATION_TO_REMOVE)
             ->detach();
     }
