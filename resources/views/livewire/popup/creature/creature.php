@@ -38,7 +38,7 @@ new class () extends Component {
         }
 
         if ($this->creature) {
-            Creature::update([
+            $this->creature->update([
                 'name'       => $this->name,
                 'initiative' => $this->initiative,
                 'type'       => $this->type,
