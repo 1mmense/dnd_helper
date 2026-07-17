@@ -103,6 +103,28 @@
                                     <strong>{{ $creature->name }}</strong>
                                 </span>
                             </div>
+
+                            {{-- TEMP --}}
+                            @if ($creature->id === App\Helpers\Config::BARBARIAN_ID)
+                                <div class="px-2 border-l border-white/30 h-full flex items-center justify-start gap-2">
+                                    <img
+                                        class="size-11 border border-white/30 rounded-full cursor-pointer"
+                                        src="{{ asset('icons/rage.png') }}"
+                                        wire:click="applyRage({{ $creature->id }})"
+                                    />
+                                </div>
+                            @endif
+
+                            {{-- TEMP --}}
+                            @if (strpos(mb_strtolower($creature->name), App\Helpers\Config::SCHRAT_NAME_TEMPLATE) !== false)
+                                <div class="px-2 border-l border-white/30 h-full flex items-center justify-start gap-2">
+                                    <img
+                                        class="size-11 border border-white/30 rounded-full cursor-pointer"
+                                        src="{{ asset('icons/schrat_shield.png') }}"
+                                        wire:click="applySchratShield({{ $creature->id }})"
+                                    />
+                                </div>
+                            @endif
                         </div>
 
                         <div class="pt-2 flex flex-wrap gap-1 border-t border-white/30">
@@ -193,7 +215,7 @@
 
                 <div>
                     <button
-                        wire:confirm="Удалить существо?"
+                        wire:confirm="Удалить существо ({{ $creature->name }})?"
                         wire:click="destroyCreature({{ $creature->id }})"
                         class="h-full px-1 py-1 bg-black/30 rounded-r-[10px] border-l border-white/30 hover:bg-white/15"
                     >

@@ -21,4 +21,12 @@ class Config
     public const EFFECT_NAME_MIN_LENGTH   = 1;
     public const EFFECT_NAME_MAX_LENGTH   = 255;
     public const POPUP_DEFAULT_TITLE      = 'Название окна';
+
+    // Temp
+    public const BARBARIAN_ID                  = 3;
+    public const RAGE_EFFECT_ID                = 1;
+    public const RAGE_EFFECT_DURATION          = 10;
+    public const SCHRAT_NAME_TEMPLATE          = 'леший';
+    public const SCHRAT_SHIELD_EFFECT_ID       = 2;
+    public const SCHRAT_SHIELD_EFFECT_DURATION = 99;
 }

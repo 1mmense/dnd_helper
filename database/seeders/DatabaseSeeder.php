@@ -32,6 +32,10 @@ class DatabaseSeeder extends Seeder
                 'color' => 'red-600'
             ],
             [
+                'name'  => 'Защита Леса',
+                'color' => 'lime-600'
+            ],
+            [
                 'name'  => 'Божественная кара',
                 'color' => 'yellow-400'
             ],
@@ -109,18 +113,23 @@ class DatabaseSeeder extends Seeder
             [
                 'name'       => 'Веледара',
                 'type'       => CreatureType::PLAYABLE,
-                'initiative' => 30,
+                'initiative' => 25,
             ],
             [
                 'name'       => 'Доброслав',
                 'type'       => CreatureType::PLAYABLE,
-                'initiative' => 31,
+                'initiative' => rand(1, 23),
             ],
             [
                 'name'       => 'Симба',
                 'type'       => CreatureType::PLAYABLE,
                 'initiative' => rand(1, 23),
             ],
+            // [
+            //     'name'       => 'Леший 1',
+            //     'type'       => CreatureType::PLAYABLE,
+            //     'initiative' => rand(1, 23),
+            // ],
         ];
 
         foreach ($creatures as $creatureKey => $creature) {
@@ -131,10 +140,8 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        Creature::factory(3)->create();
+        // Creature::factory(3)->create();
 
         MainList::create();
-
-
     }
 }

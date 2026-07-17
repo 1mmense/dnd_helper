@@ -40,6 +40,8 @@ new class () extends Component {
             return;
         }
 
+        $this->name = trim($this->name);
+
         if (isset($this->creature, $this->creatureId)) {
             $this->creature->update([
                 'name'       => $this->name,

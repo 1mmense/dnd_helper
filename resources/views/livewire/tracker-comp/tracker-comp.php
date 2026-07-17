@@ -204,4 +204,50 @@ new class () extends Component {
 
         Creature::find($creatureId)->delete();
     }
+
+    // TEMP
+    public function applyRage($creatureId = null)
+    {
+        if (!isset($creatureId)) {
+            return;
+        }
+
+        /** @var Creature $creature */
+        $creature = Creature::find($creatureId);
+
+        if (empty($creature)) {
+            return;
+        }
+
+        $creature->effects()->syncWithoutDetaching([
+            Config::RAGE_EFFECT_ID => [
+                'trigger_type'       => EffectTriggerType::ON_TARGET_TURN_END,
+                'source_creature_id' => $creatureId,
+                'duration'           => Config::RAGE_EFFECT_DURATION
+            ]
+        ]);
+    }
+
+    // TEMP
+    public function applySchratShield($creatureId = null)
+    {
+        if (!isset($creatureId)) {
+            return;
+        }
+
+        /** @var Creature $creature */
+        $creature = Creature::find($creatureId);
+
+        if (empty($creature)) {
+            return;
+        }
+
+        $creature->effects()->syncWithoutDetaching([
+            Config::SCHRAT_SHIELD_EFFECT_ID => [
+                'trigger_type'       => EffectTriggerType::ON_TARGET_TURN_END,
+                'source_creature_id' => $creatureId,
+                'duration'           => Config::SCHRAT_SHIELD_EFFECT_DURATION
+            ]
+        ]);
+    }
 };
