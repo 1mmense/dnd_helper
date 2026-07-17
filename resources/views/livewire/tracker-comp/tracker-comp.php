@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\EffectTriggerType;
+use App\Enums\EventNames;
 use App\Helpers\Config;
 use App\Models\Creature;
 use App\Models\Effect;
@@ -10,11 +12,10 @@ use Livewire\Component;
 
 new class () extends Component {
     public Collection $creatures;
-
+    public $nextIndex;
     public $effectContainers = [];
     public $effectsList      = [];
     public $roundNumber      = Config::DEFAULT_ROUND_NUMBER;
-    public $nextIndex;
 
     public function render()
     {
@@ -44,16 +45,17 @@ new class () extends Component {
         return $this->view([
             'creatures'    => $this->creatures,
             'round_number' => $this->roundNumber,
+            'event_names'  => EventNames::all()
         ]);
     }
 
-    #[On('reload-main-content')]
+    #[On(EventNames::RELOAD_MAIN_CONTENT)]
     public function refresh()
     {
         // Intentionally empty
     }
 
-    #[On('remove-effect')]
+    #[On(EventNames::REMOVE_EFFECT)]
     public function removeEffect(int $creatureId, int $effectId)
     {
         /** @var Creature $creature */
@@ -90,6 +92,7 @@ new class () extends Component {
             return;
         }
 
+        /** @var Creature $currentActiveCreature */
         $currentActiveCreature = $this->creatures->firstWhere('is_active', true);
 
         if ($currentActiveCreature) {
@@ -118,14 +121,46 @@ new class () extends Component {
             'is_active' => true
         ]);
 
-        DB::table('creature_effect')
-            ->where('creature_id', $currentActiveCreature->id)
-            ->where('duration', '>', Config::DURATION_TO_REMOVE)
-            ->decrement('duration');
+        $this->processEffects(currentCreature: $currentActiveCreature, nextCreature: $nextCreature);
+    }
 
-        $currentActiveCreature->effects()
-            ->wherePivot('duration', '<=', Config::DURATION_TO_REMOVE)
-            ->detach();
+    public function processEffects(Creature $currentCreature, Creature $nextCreature)
+    {
+        if (!empty($currentCreature)) {
+            DB::table('creature_effect')
+                ->where('source_creature_id', $currentCreature->id)
+                ->where('trigger_type', EffectTriggerType::ON_CASTER_TURN_END)
+                ->where('duration', '>', Config::DURATION_TO_REMOVE)
+                ->decrement('duration');
+
+            DB::table('creature_effect')
+                ->where('creature_id', $currentCreature->id)
+                ->where('trigger_type', EffectTriggerType::ON_TARGET_TURN_END)
+                ->where('duration', '>', Config::DURATION_TO_REMOVE)
+                ->decrement('duration');
+
+            $currentCreature->effects()
+                ->wherePivot('duration', '<=', Config::DURATION_TO_REMOVE)
+                ->detach();
+        }
+
+        if (!empty($nextCreature)) {
+            DB::table('creature_effect')
+                ->where('source_creature_id', $nextCreature->id)
+                ->where('trigger_type', EffectTriggerType::ON_CASTER_TURN_START)
+                ->where('duration', '>', Config::DURATION_TO_REMOVE)
+                ->decrement('duration');
+
+            DB::table('creature_effect')
+                ->where('creature_id', $nextCreature->id)
+                ->where('trigger_type', EffectTriggerType::ON_TARGET_TURN_START)
+                ->where('duration', '>', Config::DURATION_TO_REMOVE)
+                ->decrement('duration');
+
+            $nextCreature->effects()
+                ->wherePivot('duration', '<=', Config::DURATION_TO_REMOVE)
+                ->detach();
+        }
     }
 
     public function resetOrder()

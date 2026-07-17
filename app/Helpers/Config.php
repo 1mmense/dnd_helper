@@ -16,7 +16,9 @@ class Config
     public const CREATURE_NAME_MIN_LENGTH = 1;
     public const CREATURE_NAME_MAX_LENGTH = 255;
     public const CREATURE_TYPE_DEFAULT    = CreatureType::NON_PLAYABLE;
+    public const CREATURE_ID_DEFAULT      = null;
     public const EFFECT_NAME_DEFAULT      = 'Новый эффект';
     public const EFFECT_NAME_MIN_LENGTH   = 1;
     public const EFFECT_NAME_MAX_LENGTH   = 255;
+    public const POPUP_DEFAULT_TITLE      = 'Название окна';
 }

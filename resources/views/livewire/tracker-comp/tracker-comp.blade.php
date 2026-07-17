@@ -1,11 +1,5 @@
 <div>
-    <livewire:popup.duration
-        popup_title="Изменить длительность"
-        submit_button_text="Применить"
-    />
-
     <livewire:popup.add-effect
-        popup_title="Добавить эффект"
         submit_button_text="Применить"
     />
 
@@ -34,7 +28,11 @@
             </button>
 
             <button
-                wire:click="$dispatch('open-creature-popup')"
+                wire:click="$dispatch(
+                    '{{ App\Enums\EventNames::OPEN_POPUP }}', {
+                        eventTarget: '{{ App\Enums\EventTargets::CREATURE }}'
+                    }
+                )"
                 class="
                     bg-black/20 text-gray-300 border-white/30
                     hover:bg-white/25 hover:text-white
@@ -86,7 +84,8 @@
                                         border border-white/30
                                     "
                                     wire:click="$dispatch(
-                                        'open-creature-popup', {
+                                        '{{ App\Enums\EventNames::OPEN_POPUP }}', {
+                                            eventTarget: '{{ App\Enums\EventTargets::CREATURE }}',
                                             creatureId: {{ $creature->id }}
                                         }
                                     )"
@@ -109,7 +108,8 @@
                         <div class="pt-2 flex flex-wrap gap-1 border-t border-white/30">
                             <button
                                 wire:click="$dispatch(
-                                    'open-effects-popup', {
+                                    '{{ App\Enums\EventNames::OPEN_POPUP }}', {
+                                        eventTarget: '{{ App\Enums\EventTargets::EFFECT }}',
                                         creatureId: {{ $creature->id }}
                                     }
                                 )"
@@ -149,23 +149,13 @@
                                         wire:click="removeEffect({{ $creature->id }}, {{ $effect->id }})"
                                         type="button"
                                     >
-                                        {{-- <svg
-                                            class="size-2"
-                                            aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke-width="2.5"
-                                            stroke="currentColor"
-                                        >
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                        </svg> --}}
                                         &#x2717;
                                     </button>
 
                                     <span class="py-1 px-1 font-medium"
                                         wire:click="$dispatch(
-                                            'open-duration-popup', {
+                                            '{{ App\Enums\EventNames::OPEN_POPUP }}', {
+                                                eventTarget: '{{ App\Enums\EventTargets::EFFECT }}',
                                                 creatureId: {{ $creature->id }},
                                                 effectId: {{ $effect->id }},
                                                 duration: {{ $effect->effect_data->duration ?? 0 }}
@@ -178,10 +168,11 @@
                                     @if ($hasDuration)
                                         <button
                                             wire:click="$dispatch(
-                                                'open-duration-popup', {
+                                                '{{ App\Enums\EventNames::OPEN_POPUP }}', {
+                                                    eventTarget: '{{ App\Enums\EventTargets::EFFECT }}',
                                                     creatureId: {{ $creature->id }},
                                                     effectId: {{ $effect->id }},
-                                                    duration: {{ $effect->effect_data->duration }}
+                                                    duration: {{ $effect->effect_data->duration ?? 0 }}
                                                 }
                                             )"
                                             class="

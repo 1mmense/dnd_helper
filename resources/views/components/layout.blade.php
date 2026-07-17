@@ -34,6 +34,9 @@
                                 <x-nav-link href="/effects" :active="request()->is('effects*')">
                                     Эффекты
                                 </x-nav-link>
+                                <x-nav-link href="/bestiary/templates" :active="request()->is('bestiary/templates*')">
+                                    Бестиарий (шаблоны)
+                                </x-nav-link>
                             </div>
                         </div>
                     </div>

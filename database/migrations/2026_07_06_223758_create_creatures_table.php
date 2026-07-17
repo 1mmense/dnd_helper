@@ -16,8 +16,8 @@ return new class () extends Migration {
             $table->string('name');
             $table->string('type');
             $table->boolean('is_active')->default(false);
-            $table->integer('initiative')->default(Config::DEFAULT_INI);
-            $table->integer('position')->default(Config::DEFAULT_POSITION);
+            $table->integer('initiative')->unsigned()->default(Config::DEFAULT_INI);
+            $table->integer('position')->unsigned()->default(Config::DEFAULT_POSITION);
             $table->timestamps();
         });
     }

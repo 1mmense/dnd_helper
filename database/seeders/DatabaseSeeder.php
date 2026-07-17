@@ -127,13 +127,14 @@ class DatabaseSeeder extends Seeder
             $cr = Creature::create($creature);
 
             if ($creatureKey === 0) {
-                $cr->effects()->attach(range(1, count($effects)));
+                // $cr->effects()->attach(range(1, count($effects)));
             }
         }
 
-        // Creature::factory(10)->create();
+        Creature::factory(3)->create();
 
         MainList::create();
-        // $creature = Creature::first();
+
+
     }
 }

@@ -17,7 +17,7 @@ class Creature extends Model
     {
         return $this->belongsToMany(Effect::class, foreignPivotKey: 'creature_id')
             ->as('effect_data')
-            ->withPivot('duration')
+            ->withPivot(['duration', 'duration', 'trigger_type', 'source_creature_id'])
             ->withTimestamps();
     }
 }

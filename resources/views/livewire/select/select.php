@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\EventNames;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Modelable;
 use Livewire\Component;
@@ -7,13 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 use Livewire\Attributes\On;
 
 new class () extends Component {
-    #[Modelable]
-    public $selectedItemId = null;
-
-    public $selectedElementKey = null;
     public Collection $items;
     public $label;
-    public $open = false;
+    public $selectedElementKey = null;
+    public $open               = false;
+
+    #[Modelable]
+    public $selectedItemId = null;
 
     public function mount()
     {
@@ -26,7 +27,7 @@ new class () extends Component {
         }
     }
 
-    #[On('reset-select-element')]
+    #[On(EventNames::RESET_SELECT_ELEMENT)]
     public function unload()
     {
         $this->selectedElementKey = null;

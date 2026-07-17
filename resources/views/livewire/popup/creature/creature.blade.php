@@ -4,8 +4,7 @@
 
 <div>
     <livewire:popup.popup
-        popup_title="{{ $popup_title }}"
-        wire:model="creaturePopupDisplayFlag"
+        :eventTarget="$eventTarget"
     >
         <form
             wire:submit="updateCreature"
@@ -15,7 +14,7 @@
 
             @if ($typesList)
                 <div class="flex flex-col w-full justify-between gap-1">
-                    <label for="name" class="text-sm font-medium">
+                    <label class="text-sm font-medium">
                         Тип:
                     </label>
 
@@ -23,7 +22,6 @@
                         :items="$typesList"
                         label="Тип существа"
                         wire:model="type"
-                        wire:key="select-creature-type-{{ $creature?->id ?? 'new' }}"
                     />
                 </div>
 
@@ -61,7 +59,7 @@
                 <x-form-error for="initiative" />
             </div>
 
-            {{-- <input type="hidden" wire:model="creatureId" value="{{ $creatureId }}" /> --}}
+            <input type="hidden" wire:model="creatureId" />
 
             <button
                 class="mt-4 px-4 py-2 bg-black/30 rounded border border-white/30 hover:bg-white/15"

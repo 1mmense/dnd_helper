@@ -4,16 +4,24 @@
 
 <div>
     <livewire:popup.popup
-        popup_title="{{ $popup_title }}"
-        wire:model="durationPopupDisplayFlag"
+        :eventTarget="$eventTarget"
     >
+        {{-- TO BE REMOVED --}}
         <div class="my-4 flex-col items-center justify-between">
             <form wire:submit="updateDuration">
                 @csrf
 
-                <x-numeric-input
-                    wire:model="duration"
-                />
+                <div class="w-full flex flex-col items-start justify-center">
+                    <label for="selectedEffectId" class="text-sm font-medium">
+                        Укажите длительность эффекта
+                    </label>
+
+                    <x-numeric-input
+                        wire:model="duration"
+                    />
+
+                    <x-form-error for="duration" />
+                </div>
 
                 <input type="hidden" wire:model="creatureId" value="{{ $creatureId }}" />
                 <input type="hidden" wire:model="effectId" value="{{ $effectId }}" />

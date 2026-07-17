@@ -16,7 +16,7 @@ return new class () extends Migration {
         Schema::create('effects', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('default_duration')->nullable();
+            $table->integer('default_duration')->unsigned()->nullable();
             $table->string('color');
             $table->timestamps();
         });
@@ -25,13 +25,15 @@ return new class () extends Migration {
             $table->id();
             $table->foreignIdFor(Effect::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Creature::class)->constrained()->cascadeOnDelete();
-            $table->integer('duration')->default(Config::DURATION_MIN);
+            $table->integer('duration')->unsigned()->default(Config::DURATION_MIN);
+            $table->string('trigger_type');
+            $table->integer('source_creature_id')->unsigned()->nullable();
             $table->timestamps();
         });
 
         Schema::create('main_list', function (Blueprint $table) {
             $table->id();
-            $table->integer('round_number')->default(Config::DEFAULT_ROUND_NUMBER);
+            $table->integer('round_number')->unsigned()->default(Config::DEFAULT_ROUND_NUMBER);
             $table->timestamps();
         });
     }
