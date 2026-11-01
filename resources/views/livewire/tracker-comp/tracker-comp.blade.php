@@ -62,12 +62,15 @@
         @foreach ($creatures as $creature)
             <div wire:key="{{ $creature->id }}"
                 class="
-                    flex gap-2
+                    overflow-hidden flex gap-2 items-stretch
                     rounded-[10px] pl-2 bg-red-800/20
                     border border-white/30
-                    {{ $creature->is_active ? 'shadow-[0_0_16px_0_var(--tw-shadow-color)] shadow-red-600 mb-2' : '' }}
+                    {{ $creature->isActive() ? "text shadow-[0_0_16px_0_var(--tw-shadow-color)] shadow-{$creature->factionColor} mb-2" : '' }}
+                    relative
                 "
             >
+                <div class="absolute left-0 top-0 bottom-0 w-1 bg-{{ $creature->factionColor }}"></div>
+
                 @php
                     $effectsContainerId = "effects_container_{$creature->id}"
                 @endphp
@@ -146,18 +149,12 @@
                             </button>
 
                             @foreach ($creature->effects->all() as $effect)
-                                @php
-                                    $hasDuration = !empty($effect->effect_data->duration);
-
-                                    $shadowString = "shadow-[0_0_5px_0_var(--tw-shadow-color)] shadow-{$effect->color}";
-                                @endphp
-
                                 <span
                                     class="
                                         {{ $effect->colorString }}
                                         inline-flex items-center p-0 overflow-hidden rounded-full border text-xs
                                         cursor-pointer
-                                        {{ $shadowString }}
+                                        {{ $effect->color ? "shadow-[0_0_5px_0_var(--tw-shadow-color)] shadow-{$effect->color}" : '' }}
                                     "
                                     type="button"
                                 >
@@ -187,7 +184,7 @@
                                         {{ $effect->name }}
                                     </span>
 
-                                    @if ($hasDuration)
+                                    @if ($effect->effect_data->duration)
                                         <button
                                             wire:click="$dispatch(
                                                 '{{ App\Enums\EventNames::OPEN_POPUP }}', {

@@ -20,7 +20,7 @@ class CreatureFactory extends Factory
     {
         return [
             'name'       => fake()->firstName(),
-            'type'       => CreatureType::NON_PLAYABLE,
+            'type'       => CreatureType::ENEMY,
             'initiative' => rand(1, 23),
         ];
     }

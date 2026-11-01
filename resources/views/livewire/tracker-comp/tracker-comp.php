@@ -77,9 +77,9 @@ new class () extends Component {
 
     private function getOrderedCreatures()
     {
-        return Creature::
-            // with(['effects' => fn ($query) => $query->orderBy('name')])
-            with('effects')
+        return Creature::with(['effects' => function ($query) {
+                $query->orderBy('creature_effect.created_at', 'asc');
+            }])
             ->orderByDesc('initiative')
             ->get();
     }
@@ -249,5 +249,21 @@ new class () extends Component {
                 'duration'           => Config::SCHRAT_SHIELD_EFFECT_DURATION
             ]
         ]);
+    }
+
+    /**
+     * Возвращает CSS класс для цвета сущности в зависимости от её типа
+     */
+    public function getCreatureColorClass(Creature $creature): string
+    {
+        if ($creature->isPlayer()) {
+            return 'bg-blue-500';
+        } elseif ($creature->isAlly()) {
+            return 'bg-green-500';
+        } elseif ($creature->isEnemy()) {
+            return 'bg-red-500';
+        }
+
+        return '';
     }
 };

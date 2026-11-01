@@ -12,14 +12,18 @@ use Livewire\Component;
 
 new class () extends Component {
     public Creature $creature;
-    public Effect $effect;
     public string $eventTarget     = EventTargets::EFFECT;
     public $effectsList            = null;
     public $creaturesList          = null;
     public $triggerTypesList       = null;
     public bool $refreshSelectFlag = false;
-    public $triggerType            = null;
-    public $sourceCreatureId       = null;
+    public $currentEffectId        = null;
+
+    #[Validate('required')]
+    public $sourceCreatureId = null;
+
+    #[Validate('required')]
+    public $triggerType = null;
 
     #[Validate('required')]
     public $selectedEffectId = null;
@@ -43,6 +47,7 @@ new class () extends Component {
     private function resetProperties()
     {
         $this->selectedEffectId = null;
+        $this->currentEffectId  = null;
         $this->triggerType      = null;
         $this->sourceCreatureId = null;
         $this->duration         = Config::DURATION_MIN;
@@ -65,13 +70,11 @@ new class () extends Component {
         }
 
         $this->resetProperties();
-
-        $creaturesList    = Creature::all();
-        $triggerTypesList = EffectTriggerType::getAll();
+        $this->resetValidation();
 
         $this->creature         = $creature;
-        $this->creaturesList    = $creaturesList;
-        $this->triggerTypesList = $triggerTypesList;
+        $this->creaturesList    = Creature::all();
+        $this->triggerTypesList = EffectTriggerType::getAll();
         $this->sourceCreatureId = $creature->id;
 
         if (!isset($effectId, $duration)) {
@@ -85,6 +88,8 @@ new class () extends Component {
             return;
         }
 
+        $this->currentEffectId = $effectId;
+
         $this->duration         = $duration;
         $this->selectedEffectId = $effect->id;
         $this->sourceCreatureId = $effect->effect_data->source_creature_id;
@@ -95,21 +100,35 @@ new class () extends Component {
     {
         $this->validate();
 
-        if (!isset($this->creature)
-            || !isset($this->selectedEffectId)
-            || !isset($this->duration)
-            || !isset($this->triggerType)
-        ) {
+        if (!isset(
+            $this->creature,
+            $this->selectedEffectId,
+            $this->duration,
+            $this->triggerType
+        )) {
             return;
         }
 
-        $this->creature->effects()->syncWithoutDetaching([
+        if ($this->currentEffectId
+            && $this->currentEffectId != $this->selectedEffectId
+        ) {
+            $oldCreatedDate = $this->creature->effects()->find($this->currentEffectId)->effect_data->created_at ?? null;
+            $this->creature->effects()->detach($this->currentEffectId);
+        }
+
+        $syncData = [
             $this->selectedEffectId => [
                 'trigger_type'       => $this->triggerType,
                 'source_creature_id' => $this->sourceCreatureId,
                 'duration'           => $this->duration
             ]
-        ]);
+        ];
+
+        if (isset($oldCreatedDate)) {
+            $syncData[$this->selectedEffectId]['created_at'] = $oldCreatedDate;
+        }
+
+        $this->creature->effects()->syncWithoutDetaching($syncData);
 
         $this->dispatch(EventNames::RELOAD_MAIN_CONTENT);
         $this->dispatch(EventNames::RESET_SELECT_ELEMENT);

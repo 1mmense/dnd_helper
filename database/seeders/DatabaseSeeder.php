@@ -112,22 +112,22 @@ class DatabaseSeeder extends Seeder
         $creatures = [
             [
                 'name'       => 'Веледара',
-                'type'       => CreatureType::PLAYABLE,
+                'type'       => CreatureType::PLAYER,
                 'initiative' => 25,
             ],
             [
                 'name'       => 'Доброслав',
-                'type'       => CreatureType::PLAYABLE,
+                'type'       => CreatureType::PLAYER,
                 'initiative' => rand(1, 23),
             ],
             [
                 'name'       => 'Симба',
-                'type'       => CreatureType::PLAYABLE,
+                'type'       => CreatureType::PLAYER,
                 'initiative' => rand(1, 23),
             ],
             // [
             //     'name'       => 'Леший 1',
-            //     'type'       => CreatureType::PLAYABLE,
+            //     'type'       => CreatureType::ENEMY,
             //     'initiative' => rand(1, 23),
             // ],
         ];

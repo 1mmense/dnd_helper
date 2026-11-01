@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html class="h-full bg-red-950" lang="en">
+<html class="h-full bg-red-950">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://cdn.tailwindcss.com"></script>
 
     <title>DND Helper</title>
     <link href="{{ asset('icons/d20_icon.png') }}" rel="icon" type="image/x-icon">
 
-    {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     @livewireStyles
 </head>

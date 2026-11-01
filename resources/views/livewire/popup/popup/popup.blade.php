@@ -12,10 +12,10 @@
 
     <div class="
         p-6 relative bg-red-950 text-gray-300 border border-white/30 rounded-lg shadow-lg
-        w-fit min-w-[23rem] max-w-[90vw] md:max-w-2xl lg:max-w-4xl shrink-0
+        w-fit min-w-92 max-w-[90vw] md:max-w-2xl lg:max-w-4xl shrink-0
     ">
         <div class="flex items-center justify-between">
-            <h2 class="text-xl font-bold whitespace-nowrap md:whitespace-normal break-words">
+            <h2 class="text-xl font-bold whitespace-nowrap md:whitespace-normal wrap-break-word">
                 {!! $popupTitle !!}
             </h2>
 

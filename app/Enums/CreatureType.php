@@ -2,33 +2,50 @@
 
 namespace App\Enums;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use ReflectionClass;
 
 class CreatureType
 {
-    public const PLAYABLE     = 'pc';
-    public const NON_PLAYABLE = 'npc';
+    public const PLAYER = 'player';
+    public const ALLY   = 'ally';
+    public const ENEMY  = 'enemy';
 
+    /**
+     * Возвращает название указанного типа существа.
+     *
+     * @param string $type Тип существа
+     *
+     * @return string Лейбл типа существа
+     */
     public static function getLabel(string $type): string
     {
         return match ($type) {
-            self::PLAYABLE     => 'Игрок',
-            self::NON_PLAYABLE => 'NPC',
+            self::PLAYER => 'Игрок',
+            self::ALLY   => 'Союзник',
+            self::ENEMY  => 'Враг',
+            default      => 'Неизвестно',
         };
     }
 
-    public static function getAll()
+    /**
+     * Возвращает все типы существ.
+     *
+     * @return Collection
+     */
+    public static function getAll(): Collection
     {
         $rawData = [
             [
-                'id'   => self::PLAYABLE,
+                'id'   => self::PLAYER,
                 'name' => 'Игрок'
             ],
             [
-                'id'   => self::NON_PLAYABLE,
-                'name' => 'NPC'
+                'id'   => self::ALLY,
+                'name' => 'Союзник'
+            ],
+            [
+                'id'   => self::ENEMY,
+                'name' => 'Враг'
             ],
         ];
 
